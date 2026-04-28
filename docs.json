@@ -3,10 +3,89 @@
   "name": "Tooken Docs",
   "description": "AGI 基础设施、智能路由与 Web4 原生结算层文档",
   "theme": "mint",
+  "banner": {
+    "content": "Tooken Docs 已支持中/英/日/韩多语言自动同步。",
+    "dismissible": true,
+    "type": "info"
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "background": {
+    "decoration": "grid"
+  },
   "colors": {
     "primary": "#2563eb",
     "light": "#dbeafe",
     "dark": "#1e3a8a"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Pricing",
+        "href": "https://tooken.ai"
+      },
+      {
+        "label": "Status",
+        "href": "https://tooken.mintlify.app/docs"
+      },
+      {
+        "type": "github",
+        "href": "https://github.com/MSNirvana/Tooken"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get API Key",
+      "href": "https://tooken.ai"
+    }
+  },
+  "footer": {
+    "socials": {
+      "website": "https://tooken.ai",
+      "github": "https://github.com/MSNirvana/Tooken"
+    },
+    "links": [
+      {
+        "header": "Products",
+        "items": [
+          {
+            "label": "API Docs",
+            "href": "/docs"
+          },
+          {
+            "label": "OpenAPI",
+            "href": "/docs/api-openapi"
+          }
+        ]
+      },
+      {
+        "header": "Resources",
+        "items": [
+          {
+            "label": "Changelog",
+            "href": "/docs/changelog"
+          },
+          {
+            "label": "FAQ",
+            "href": "/docs/faq-troubleshooting"
+          }
+        ]
+      },
+      {
+        "header": "Company",
+        "items": [
+          {
+            "label": "Website",
+            "href": "https://tooken.ai"
+          },
+          {
+            "label": "Contact",
+            "href": "mailto:hello@tooken.ai"
+          }
+        ]
+      }
+    ]
   },
   "navigation": {
     "languages": [
@@ -57,7 +136,8 @@
             "pages": [
               "docs/changelog",
               "docs/faq-troubleshooting",
-              "docs/brand-assets"
+              "docs/brand-assets",
+              "docs/translation-quality"
             ]
           }
         ]
@@ -108,7 +188,8 @@
             "pages": [
               "docs/en/changelog",
               "docs/en/faq-troubleshooting",
-              "docs/en/brand-assets"
+              "docs/en/brand-assets",
+              "docs/en/translation-quality"
             ]
           }
         ]
@@ -159,7 +240,8 @@
             "pages": [
               "docs/ja/changelog",
               "docs/ja/faq-troubleshooting",
-              "docs/ja/brand-assets"
+              "docs/ja/brand-assets",
+              "docs/ja/translation-quality"
             ]
           }
         ]
@@ -210,7 +292,8 @@
             "pages": [
               "docs/ko/changelog",
               "docs/ko/faq-troubleshooting",
-              "docs/ko/brand-assets"
+              "docs/ko/brand-assets",
+              "docs/ko/translation-quality"
             ]
           }
         ]

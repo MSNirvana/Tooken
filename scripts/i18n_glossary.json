@@ -1,0 +1,39 @@
+{
+  "preserve_terms": [
+    "Tooken",
+    "x402",
+    "Agent",
+    "AGI",
+    "Web4",
+    "ERC-8183",
+    "OpenAPI",
+    "Credits",
+    "API",
+    "DID",
+    "GPT-5",
+    "Claude",
+    "Gemini",
+    "Kimi",
+    "DeepSeek",
+    "Qwen"
+  ],
+  "locale_style": {
+    "en": "Use concise, product-documentation style English.",
+    "ja": "Use natural and professional Japanese suitable for API documentation.",
+    "ko": "Use natural and professional Korean suitable for API documentation."
+  },
+  "locale_term_map": {
+    "ja": {
+      "Credits": "クレジット",
+      "Quick Start": "クイックスタート",
+      "FAQ": "よくある質問",
+      "Changelog": "更新履歴"
+    },
+    "ko": {
+      "Credits": "크레딧",
+      "Quick Start": "빠른 시작",
+      "FAQ": "자주 묻는 질문",
+      "Changelog": "변경 로그"
+    }
+  }
+}

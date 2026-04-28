@@ -30,6 +30,8 @@ jobs:
       - name: Sync translated pages
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TRANSLATION_API_KEY: ${{ secrets.TRANSLATION_API_KEY }}
+          TRANSLATION_BASE_URL: ${{ secrets.TRANSLATION_BASE_URL }}
           BEFORE_SHA: ${{ github.event.before }}
           CURRENT_SHA: ${{ github.sha }}
         run: |

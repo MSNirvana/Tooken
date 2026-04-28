@@ -1,0 +1,41 @@
+---
+title: "翻译质量增强说明"
+---
+
+> This page is synced automatically from the Chinese source and awaits full Japanese translation.
+> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
+
+
+# 翻译质量增强说明
+
+当前文档系统支持从中文源文档自动同步到英文、日文、韩文。
+
+## 翻译引擎配置
+
+- 优先使用：`TRANSLATION_API_KEY`
+- 兼容网关地址：`TRANSLATION_BASE_URL`
+- 备用使用：`OPENAI_API_KEY`
+
+如果你使用 OpenAI 兼容网关（包含 Tooken），建议配置：
+
+- `TRANSLATION_BASE_URL`：网关 `/v1` 地址
+- `TRANSLATION_API_KEY`：可用的翻译模型 API Key
+
+## 术语保护机制
+
+在 `scripts/i18n_glossary.json` 中可维护术语白名单与语言风格提示。
+
+默认保护术语包括：
+
+- Tooken
+- x402
+- Agent
+- ERC-8183
+
+## 更新流程
+
+1. 更新 `docs/*.mdx` 中文页面
+2. 推送到 `main`
+3. GitHub Action 自动同步 `en/ja/ko`
+4. Mintlify 自动部署
+

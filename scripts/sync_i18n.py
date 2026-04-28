@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import re
 import subprocess
 import urllib.error
 import urllib.request
@@ -13,6 +14,7 @@ DOCS_DIR = ROOT / "docs"
 EN_DIR = DOCS_DIR / "en"
 JA_DIR = DOCS_DIR / "ja"
 KO_DIR = DOCS_DIR / "ko"
+GLOSSARY_PATH = ROOT / "scripts" / "i18n_glossary.json"
 
 # Chinese source pages currently maintained by authors.
 ZH_PAGES = [
@@ -37,6 +39,7 @@ ZH_PAGES = [
     "changelog.mdx",
     "faq-troubleshooting.mdx",
     "brand-assets.mdx",
+    "translation-quality.mdx",
 ]
 
 TITLE_MAP = {
@@ -73,7 +76,7 @@ LOCALE_TITLE_MAP = {
     },
 }
 
-TERMS_TO_PRESERVE = [
+DEFAULT_TERMS_TO_PRESERVE = [
     "Tooken",
     "x402",
     "Agent",
@@ -117,6 +120,37 @@ def parse_frontmatter(text: str):
     return fm, body
 
 
+def split_sections(body: str):
+    """
+    Split markdown body into sections by heading boundaries.
+    Returns list[(heading_or_preamble, content)].
+    """
+    lines = body.splitlines(keepends=True)
+    sections = []
+    current_key = "__preamble__"
+    current_lines = []
+    heading_re = re.compile(r"^\s{0,3}#{1,6}\s+")
+
+    for line in lines:
+        if heading_re.match(line) and current_lines:
+            sections.append((current_key, "".join(current_lines)))
+            current_key = line.strip()
+            current_lines = [line]
+        elif heading_re.match(line) and not current_lines:
+            current_key = line.strip()
+            current_lines.append(line)
+        else:
+            current_lines.append(line)
+
+    if current_lines:
+        sections.append((current_key, "".join(current_lines)))
+    return sections
+
+
+def sections_to_body(sections):
+    return "".join(content for _, content in sections)
+
+
 def build_frontmatter(fm: dict):
     lines = ["---"]
     for k, v in fm.items():
@@ -127,13 +161,36 @@ def build_frontmatter(fm: dict):
     return "\n".join(lines)
 
 
-def translate_with_openai(content: str, api_key: str, model: str, target_language: str):
+def load_glossary():
+    if not GLOSSARY_PATH.exists():
+        return {
+            "preserve_terms": DEFAULT_TERMS_TO_PRESERVE,
+            "locale_style": {},
+        }
+    try:
+        return json.loads(GLOSSARY_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {
+            "preserve_terms": DEFAULT_TERMS_TO_PRESERVE,
+            "locale_style": {},
+        }
+
+
+def translate_with_openai(
+    content: str,
+    api_key: str,
+    model: str,
+    target_language: str,
+    base_url: str,
+    terms_to_preserve,
+    locale_style_prompt: str,
+):
     lang_name = {
         "en": "English",
         "ja": "Japanese",
         "ko": "Korean",
     }.get(target_language, "English")
-    terms = ", ".join(TERMS_TO_PRESERVE)
+    terms = ", ".join(terms_to_preserve)
     payload = {
         "model": model,
         "messages": [
@@ -141,8 +198,10 @@ def translate_with_openai(content: str, api_key: str, model: str, target_languag
                 "role": "system",
                 "content": (
                     f"You are a technical translator. Translate Simplified Chinese markdown/MDX into natural {lang_name}. "
-                    "Preserve links, code blocks, frontmatter keys, inline code, and file paths exactly. "
+                    "Preserve links, code blocks, table structure, frontmatter keys, inline code, and file paths exactly. "
+                    "Do not add or remove sections. Keep heading hierarchy exactly the same. "
                     f"Never translate these terms: {terms}."
+                    f" {locale_style_prompt}".strip()
                 ),
             },
             {"role": "user", "content": content},
@@ -150,7 +209,7 @@ def translate_with_openai(content: str, api_key: str, model: str, target_languag
         "temperature": 0.2,
     }
     req = urllib.request.Request(
-        "https://api.openai.com/v1/chat/completions",
+        f"{base_url.rstrip('/')}/chat/completions",
         data=json.dumps(payload).encode("utf-8"),
         method="POST",
         headers={
@@ -161,6 +220,16 @@ def translate_with_openai(content: str, api_key: str, model: str, target_languag
     with urllib.request.urlopen(req, timeout=120) as resp:
         body = json.loads(resp.read().decode("utf-8"))
     return body["choices"][0]["message"]["content"]
+
+
+def apply_locale_term_map(text: str, locale: str, locale_term_map: dict):
+    mappings = locale_term_map.get(locale, {}) if isinstance(locale_term_map, dict) else {}
+    if not mappings:
+        return text
+    # Replace longer keys first to avoid partial overlaps.
+    for src, dst in sorted(mappings.items(), key=lambda kv: len(kv[0]), reverse=True):
+        text = text.replace(src, dst)
+    return text
 
 
 def fallback_sync(content: str, target_language: str):
@@ -191,10 +260,24 @@ def main():
     parser.add_argument("--all", action="store_true")
     parser.add_argument("--model", default="gpt-4.1-mini")
     parser.add_argument("--locales", default="en,ja,ko")
+    parser.add_argument("--force-fallback", action="store_true")
     args = parser.parse_args()
     locales = [x.strip() for x in args.locales.split(",") if x.strip()]
 
-    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+    # Supports OpenAI-compatible providers via base_url override.
+    api_key = (
+        os.getenv("TRANSLATION_API_KEY", "").strip()
+        or os.getenv("OPENAI_API_KEY", "").strip()
+    )
+    base_url = (
+        os.getenv("TRANSLATION_BASE_URL", "").strip()
+        or os.getenv("OPENAI_BASE_URL", "").strip()
+        or "https://api.openai.com/v1"
+    )
+    glossary = load_glossary()
+    terms_to_preserve = glossary.get("preserve_terms", DEFAULT_TERMS_TO_PRESERVE)
+    locale_style = glossary.get("locale_style", {})
+    locale_term_map = glossary.get("locale_term_map", {})
     changed = set()
     if args.all or not args.since_ref:
         changed = {str(Path("docs") / p) for p in ZH_PAGES}
@@ -214,21 +297,51 @@ def main():
             continue
         text = zh_path.read_text(encoding="utf-8")
         fm, body = parse_frontmatter(text)
+        zh_sections = split_sections(body)
         for locale in locales:
             locale_fm = dict(fm)
             if "title" in locale_fm:
                 locale_fm["title"] = normalize_title(locale_fm["title"], locale)
 
-            if api_key:
+            locale_style_prompt = locale_style.get(locale, "")
+            locale_path = ROOT / map_to_locale_path(zh_rel, locale)
+            existing_sections = {}
+            if locale_path.exists():
+                old_text = locale_path.read_text(encoding="utf-8")
+                _old_fm, old_body = parse_frontmatter(old_text)
+                existing_sections = {k: v for k, v in split_sections(old_body)}
+
+            if api_key and not args.force_fallback:
                 try:
-                    new_body = translate_with_openai(body, api_key, args.model, locale)
+                    # Phase-2 quality optimization: translate only changed sections.
+                    translated_sections = []
+                    for sec_key, zh_content in zh_sections:
+                        old_content = existing_sections.get(sec_key)
+                        if old_content is not None and old_content.strip() == zh_content.strip():
+                            translated_sections.append((sec_key, old_content))
+                            continue
+                        translated = translate_with_openai(
+                            zh_content,
+                            api_key,
+                            args.model,
+                            locale,
+                            base_url,
+                            terms_to_preserve,
+                            locale_style_prompt,
+                        )
+                        translated = apply_locale_term_map(translated, locale, locale_term_map)
+                        translated_sections.append((sec_key, translated))
+                    new_body = sections_to_body(translated_sections)
                 except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError):
                     new_body = fallback_sync(body, locale)
             else:
+                # Quality guard: without translation key, do not overwrite existing locale files.
+                if locale_path.exists() and not args.force_fallback:
+                    continue
                 new_body = fallback_sync(body, locale)
+            new_body = apply_locale_term_map(new_body, locale, locale_term_map)
 
             out_text = build_frontmatter(locale_fm) + "\n\n" + new_body
-            locale_path = ROOT / map_to_locale_path(zh_rel, locale)
             locale_path.write_text(out_text, encoding="utf-8")
             updated.append(str(locale_path.relative_to(ROOT)))
 
