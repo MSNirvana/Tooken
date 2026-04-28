@@ -1,0 +1,53 @@
+openapi: 3.1.0
+info:
+  title: Tooken API
+  version: 1.0.0
+  description: |
+    Tooken API OpenAPI template.
+    Replace placeholder schemas/endpoints with real production definitions.
+servers:
+  - url: https://api.tooken.ai
+    description: Production
+paths:
+  /v1/chat/completions:
+    post:
+      summary: Chat completions (OpenAI compatible)
+      operationId: createChatCompletion
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  example: auto
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        enum: [system, user, assistant]
+                      content:
+                        type: string
+              required: [model, messages]
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limited
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key

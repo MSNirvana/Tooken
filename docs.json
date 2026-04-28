@@ -1,0 +1,61 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Tooken Docs",
+  "description": "AGI 基础设施、智能路由与 Web4 原生结算层文档",
+  "theme": "mint",
+  "colors": {
+    "primary": "#2563eb",
+    "light": "#dbeafe",
+    "dark": "#1e3a8a"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "开始使用",
+        "pages": [
+          "docs/index",
+          "docs/module-1-platform-overview",
+          "docs/module-2-quickstart"
+        ]
+      },
+      {
+        "group": "核心能力",
+        "pages": [
+          "docs/module-3-models-routing",
+          "docs/module-4-payment-settlement"
+        ]
+      },
+      {
+        "group": "Agent 经济层",
+        "pages": [
+          "docs/module-5-agent-economy",
+          "docs/module-5-agent-wallet-identity",
+          "docs/module-5-agent-routing-budget",
+          "docs/module-5-erc8183-roadmap",
+          "docs/module-5-multi-agent-economy",
+          "docs/module-5-web4-vision"
+        ]
+      },
+      {
+        "group": "API",
+        "pages": [
+          "docs/api-reference",
+          "docs/api-authentication",
+          "docs/api-chat-completions",
+          "docs/api-messages",
+          "docs/api-routing",
+          "docs/api-errors-rate-limits",
+          "docs/api-openapi"
+        ]
+      },
+      {
+        "group": "更新与支持",
+        "pages": [
+          "docs/changelog",
+          "docs/faq-troubleshooting",
+          "docs/brand-assets"
+        ]
+      }
+    ]
+  }
+}

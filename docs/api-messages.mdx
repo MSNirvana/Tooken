@@ -1,0 +1,54 @@
+---
+title: 6.3 Messages（Claude 兼容）
+---
+
+## **6.3 Messages（Claude 兼容）**
+
+**端点：** `POST /v1/messages`
+
+### **请求示例**
+
+```
+import anthropic
+
+client = anthropic.Anthropic(
+    api_key="sk-your-api-key",
+    base_url="https://api.tooken.ai"
+)
+
+message = client.messages.create(
+    model="claude-opus-4",
+    max_tokens=2048,
+    system="你是一个资深的商业顾问。",
+    messages=[
+        {"role": "user", "content": "帮我分析这个商业计划的可行性"}
+    ]
+)
+
+print(message.content[0].text)
+```
+
+### **扩展思考模式**
+
+```
+message = client.messages.create(
+    model="claude-opus-4",
+    max_tokens=16000,
+    thinking={
+        "type": "enabled",
+        "budget_tokens": 10000  # 允许最多 10000 Token 用于思考
+    },
+    messages=[
+        {"role": "user", "content": "这道数学题：..."}
+    ]
+)
+
+# 获取思考过程
+for block in message.content:
+    if block.type == "thinking":
+        print("思考过程：", block.thinking)
+    elif block.type == "text":
+        print("最终答案：", block.text)
+```
+
+---

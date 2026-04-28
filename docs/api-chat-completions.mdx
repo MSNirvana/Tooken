@@ -1,0 +1,100 @@
+---
+title: 6.2 Chat Completions（OpenAI 兼容）
+---
+
+## **6.2 Chat Completions（OpenAI 兼容）**
+
+**端点：** `POST /v1/chat/completions`
+
+**Base URL：** `https://api.tooken.ai`
+
+### **请求参数**
+
+| **参数** | **类型** | **必填** | **描述** |
+| --- | --- | --- | --- |
+| `model` | string | 是 | 模型 ID，或 `auto` / `auto-fast` / `auto-cheap` |
+| `messages` | array | 是 | 对话消息列表 |
+| `stream` | boolean | 否 | 是否流式返回，默认 `false` |
+| `max_tokens` | integer | 否 | 最大输出 Token 数 |
+| `temperature` | number | 否 | 随机性，0-2，默认 1 |
+| `tools` | array | 否 | 工具定义列表 |
+| `tool_choice` | string/object | 否 | 工具选择策略 |
+
+**平台扩展参数：**
+
+| **参数** | **类型** | **描述** |
+| --- | --- | --- |
+| `route_strategy` | object | Auto 路由策略配置 |
+| `budget_limit` | number | 本次请求最大 Credits 上限 |
+| `agent_wallet` | string | Agent 钱包地址（用于 x402 结算） |
+
+### **请求示例**
+
+```
+curl https://api.tooken.ai/v1/chat/completions \
+  -H "Authorization: Bearer sk-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "auto",
+    "messages": [
+      {"role": "system", "content": "你是一个专业的财务分析师。"},
+      {"role": "user", "content": "分析这家公司的盈利能力"}
+    ],
+    "stream": false,
+    "route_strategy": {
+      "cost_weight": 0.6,
+      "quality_weight": 0.4
+    }
+  }'
+```
+
+### **响应（非流式）**
+
+```
+{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1719000000,
+  "model": "kimi-k2",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "从财务指标来看..."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 150,
+    "completion_tokens": 800,
+    "total_tokens": 950
+  },
+  "platform": {
+    "routed_model": "kimi-k2",
+    "route_reason": "chinese-analysis-optimized",
+    "credits_consumed": 0.475,
+    "cost_saved_credits": 13.525
+  }
+}
+```
+
+### **流式响应（SSE）**
+
+```
+curl https://api.tooken.ai/v1/chat/completions \
+  -H "Authorization: Bearer sk-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{"model": "auto", "messages": [...], "stream": true}'
+```
+
+```
+data: {"id":"chatcmpl-abc","object":"chat.completion.chunk","choices":[{"delta":{"content":"从"},"index":0}]}
+data: {"id":"chatcmpl-abc","object":"chat.completion.chunk","choices":[{"delta":{"content":"财务"},"index":0}]}
+...
+data: {"id":"chatcmpl-abc","object":"chat.completion.chunk","choices":[{"delta":{},"finish_reason":"stop","index":0}]}
+data: [DONE]
+```
+
+---
