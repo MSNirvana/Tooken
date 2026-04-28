@@ -1,0 +1,48 @@
+---
+title: "6.4 路由 API（Auto 模式）"
+---
+
+> This page is synced automatically from the Chinese source and awaits full Korean translation.
+> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
+
+
+## **6.4 路由 API（Auto 模式）**
+
+**端点：** `POST /v1/route`
+
+专用路由查询接口，在发送实际请求前先查询平台推荐的模型（不消耗实际 Token）：
+
+```
+curl https://api.tooken.ai/v1/route \
+  -H "Authorization: Bearer sk-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "task_type": "code_generation",
+    "estimated_input_tokens": 2000,
+    "constraints": {
+      "max_cost_credits": 50,
+      "max_latency_ms": 5000,
+      "required_languages": ["python", "javascript"]
+    }
+  }'
+```
+
+**响应：**
+
+```
+{
+  "recommended_model": "claude-opus-4",
+  "reasoning": "代码生成任务，Claude Opus 在 Python/JavaScript 综合表现最佳",
+  "estimated_cost_credits": 38.5,
+  "estimated_latency_ms": 3200,
+  "alternatives": [
+    {
+      "model": "deepseek-v3",
+      "estimated_cost_credits": 5.5,
+      "quality_trade_off": "代码质量约 85% 水平，成本降低 86%"
+    }
+  ]
+}
+```
+
+---

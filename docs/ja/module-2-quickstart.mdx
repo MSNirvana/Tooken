@@ -1,0 +1,212 @@
+---
+title: "模块二：快速上手"
+---
+
+> This page is synced automatically from the Chinese source and awaits full Japanese translation.
+> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
+
+
+# **模块二：快速上手**
+
+## **2.1 5 分钟跑通第一个请求**
+
+### **第一步：注册账户**
+
+访问 **Tooken.ai**，支持以下方式注册：
+
+- **Web3 钱包**（MetaMask / OKX Wallet / Phantom）
+- **Google 账号** — 快速登录
+- **邮箱注册** — 传统方式
+
+> **推荐 Web3 钱包登录**：无需填写任何个人信息，即连即用，无需许可，最适合 AI Agent 身份绑定。
+> 
+
+### **第二步：获取 API Key**
+
+1. 登录后进入控制台 → **API Keys**
+2. 点击 **创建新 Key**
+3. 设置 Key 名称（如 `my-agent-001`）
+4. 可选：设置该 Key 的月消费上限（用于 Agent 预算控制）
+5. 复制 Key，格式为 `sk-xxx...`
+
+> **安全提示**：API Key 等同于账户密码，请勿泄露。建议为不同 Agent / 项目创建独立的 Key，便于成本分摊与权限管理。
+> 
+
+### **第三步：发送第一个请求**
+
+平台完全兼容 OpenAI 接口格式，任何已接入 OpenAI 的项目，只需修改 `base_url` 即可切换：
+
+```
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="sk-your-api-key",
+    base_url="https://api.tooken.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="auto",        # 使用 Auto 路由，平台自动选最优模型
+    messages=[
+        {"role": "system", "content": "你是一个专业的 AI 助手。"},
+        {"role": "user", "content": "用 Python 写一个快速排序算法"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```
+# 或使用 curl
+curl https://api.tooken.ai/v1/chat/completions \
+  -H "Authorization: Bearer sk-your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "auto",
+    "messages": [
+      {"role": "user", "content": "Hello, 你好！"}
+    ]
+  }'
+```
+
+### **第四步：查看用量**
+
+进入控制台 → **用量监控**，可查看：
+
+- 实时 Token 消耗
+- 各模型调用次数
+- 成本明细
+- ROI 分析面板
+
+---
+
+## **2.2 登录与身份验证**
+
+### **Web3 钱包登录（推荐）**
+
+适合追求隐私、无国界使用、AI Agent 身份绑定场景。
+
+**支持的钱包：**
+
+| **钱包** | **平台** | **说明** |
+| --- | --- | --- |
+| MetaMask | 浏览器插件 / Mobile | 以太坊生态首选 |
+| OKX Wallet | 浏览器插件 / Mobile | 多链支持，国内用户友好 |
+| Phantom | 浏览器插件 / Mobile | Solana 生态 |
+| WalletConnect | 协议 | 兼容 400+ 钱包 |
+
+**登录步骤：**
+
+1. 点击 **Connect Wallet**
+2. 选择你的钱包类型
+3. 在钱包中确认签名（此签名不消耗 Gas，仅用于身份验证）
+4. 登录成功，钱包地址即为你的账户 ID
+
+> **注意**：签名验证不会产生任何链上交易，不消耗 Gas 费用。
+> 
+
+### **中心化账户登录**
+
+适合企业用户、团队协作场景。
+
+- Google 账号一键登录
+- 邮箱 + 密码注册
+- 企业 SSO（联系商务）
+
+## **2.3 Credits 充值与管理**
+
+### **Credits 是什么？**
+
+Credits 是平台的计费单位，**1 Credit = 0.001 USD**。
+
+所有模型调用均消耗 Credits，消耗量取决于：
+
+- 所用模型的单价
+- 输入 Token 数量
+- 输出 Token 数量
+- 是否命中缓存
+
+### **充值方式**
+
+**链上充值（主推）：**
+
+| **网络** | **代币** | **最低充值** | **到账时间** |
+| --- | --- | --- | --- |
+| Ethereum | USDT / USDC | 10 USD | 约 2 分钟 |
+| Base | USDT / USDC | 1 USD | 约 10 秒 |
+| Solana | USDC | 1 USD | 约 5 秒 |
+| BNB Chain | USDT | 5 USD | 约 1 分钟 |
+
+> **推荐使用 Base 网络**：手续费极低（< $0.01），到账速度快，最适合高频小额充值。
+> 
+
+**法币充值（企业）：**
+
+- 支付宝 / 微信支付（国内企业）
+- Stripe 信用卡（海外用户）
+- 银行电汇（大额企业采购，联系商务）
+
+### **企业额度管理**
+
+企业账户支持多级额度管理：
+
+```
+企业主账户（总额度）
+    ├── 部门 A 子账户（分配额度上限：5000 Credits/月）
+    │     ├── API Key 1（营销 Agent）
+    │     └── API Key 2（客服 Agent）
+    ├── 部门 B 子账户（分配额度上限：3000 Credits/月）
+    └── 个人 Key（研发测试）
+```
+
+---
+
+## **2.4 OpenClaw / Claude Code 接入**
+
+### **OpenClaw 一键接入**
+
+如果你使用 OpenClaw，可以通过以下方式将 Tooken 设为默认 API 后端：
+
+```
+# 一键配置脚本
+curl -fsSL https://tooken.ai/install/openclaw.sh | bash
+```
+
+脚本会自动：
+
+1. 检测你的 OpenClaw 配置文件位置
+2. 将 API Base URL 替换为平台地址
+3. 引导你填入 API Key
+4. 验证连接是否成功
+
+**手动配置：**
+
+在 OpenClaw 设置中找到 API 配置项：
+
+```
+{
+  "apiBaseUrl": "https://api.tooken.ai/v1",
+  "apiKey": "sk-your-api-key",
+  "defaultModel": "auto"
+}
+```
+
+### **Claude Code 接入**
+
+```
+# 设置环境变量
+export ANTHROPIC_BASE_URL="https://api.tooken.ai"
+export ANTHROPIC_API_KEY="sk-your-api-key"
+
+# 启动 Claude Code
+claude
+```
+
+或写入 `~/.bashrc` / `~/.zshrc` 永久生效：
+
+```
+echo 'export ANTHROPIC_BASE_URL="https://api.tooken.ai"' >> ~/.zshrc
+echo 'export ANTHROPIC_API_KEY="sk-your-api-key"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+---

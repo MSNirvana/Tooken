@@ -1,0 +1,58 @@
+---
+title: "5.1 Agent 钱包与身份"
+---
+
+> This page is synced automatically from the Chinese source and awaits full Japanese translation.
+> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
+
+
+## **5.1 Agent 钱包与身份**
+
+### **为什么 Agent 需要钱包？**
+
+传统 AI Agent 是"无产者"——它没有资产，没有账户，所有资源都依赖人类托管。这带来几个根本性问题：
+
+1. **依赖人工充值**：Agent 余额不足时必须人工干预
+2. **无法自主决策**：Agent 不知道自己能"花多少钱"
+3. **无法 Agent 间交易**：A Agent 无法直接向 B Agent 购买服务
+4. **身份不可验证**：调用来自 Agent 还是人类，无法链上证明
+
+**Agent 钱包解决这一切。**
+
+### **为 Agent 创建钱包**
+
+```
+from platform_sdk import AgentWallet
+
+# 创建 Agent 钱包
+wallet = AgentWallet.create(
+    agent_id="customer-service-agent-001",
+    budget_policy={
+        "monthly_limit_usdc": 500,        # 月预算上限
+        "per_request_limit_usdc": 0.1,    # 单次请求上限
+        "auto_refill": True,               # 余额不足时自动从主账户补充
+        "auto_refill_threshold": 10,       # 余额低于 10 USDC 时触发补充
+        "auto_refill_amount": 50           # 每次补充 50 USDC
+    }
+)
+
+print(f"Agent 钱包地址:{wallet.address}")
+print(f"初始余额:{wallet.balance_usdc} USDC")
+```
+
+### **Agent 身份（DID）**
+
+每个 Agent 钱包自动生成一个去中心化身份标识符（DID）：
+
+```
+did:platform:0x1a2b3c4d5e6f...
+```
+
+DID 包含：
+
+- Agent 的链上地址（可验证）
+- Agent 的能力声明（调用了哪些模型、执行了哪些任务）
+- Agent 的信誉分数（由历史执行质量决定）
+- Agent 的授权范围（被允许花费的资源上限）
+
+---

@@ -1,0 +1,58 @@
+---
+title: "5.3 ERC-8183 合约层（路线图）"
+---
+
+> This page is synced automatically from the Chinese source and awaits full Korean translation.
+> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
+
+
+## **5.3 ERC-8183 合约层（路线图）**
+
+> **当前状态：技术预研阶段，预计 2027 上线**
+> 
+
+### **背景：Agent 之间的商业关系**
+
+当两个 Agent 需要合作时，如何建立信任？
+
+**问题场景：**
+
+Agent A 需要分析一份法律文件，它决定委托专门的"法律 Agent B"来完成，并支付 5 USDC。
+
+但：
+
+- Agent A 如何确保 Agent B 真的完成了工作？
+- Agent B 如何确保 Agent A 真的会付款？
+- 如果 Agent B 的结果质量不达标，谁来仲裁？
+
+### **ERC-8183：Agent 之间的可编程合同**
+
+```
+┌─────────────────────────────────────────────────────┐
+│                  ERC-8183 执行流程                    │
+│                                                      │
+│  Agent A（客户）                                      │
+│      ↓ 发起任务 + 锁定资金（5 USDC → 托管合约）         │
+│  Agent B（服务提供方）                                 │
+│      ↓ 接受任务，开始执行                               │
+│      ↓ 完成后提交结果 + 执行证明                         │
+│  Evaluator（评估方，可以是人类或另一个 Agent）            │
+│      ↓ 验证结果质量                                    │
+│  托管合约                                             │
+│      ├── 质量达标 → 释放 5 USDC 给 Agent B ✓           │
+│      └── 质量不达标 → 退还 5 USDC 给 Agent A ✗         │
+└─────────────────────────────────────────────────────┘
+```
+
+### **这构建了什么？**
+
+**Agent 经济市场（Agent Economy）：**
+
+- Agent 可以作为"服务提供方"上架能力，收取费用
+- Agent 可以作为"客户"购买其他 Agent 的服务
+- 信誉系统记录每个 Agent 的历史完成率和质量分
+- 形成"发现 → 交易 → 结算 → 信誉"的完整市场闭环
+
+这是 Web4 的核心愿景：**一个由 AGI 驱动的自组织经济网络。**
+
+---

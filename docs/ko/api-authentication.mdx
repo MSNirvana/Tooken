@@ -1,0 +1,31 @@
+---
+title: "6.1 认证"
+---
+
+> This page is synced automatically from the Chinese source and awaits full Korean translation.
+> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
+
+
+## **6.1 认证**
+
+### **Bearer Token（OpenAI 兼容）**
+
+```
+Authorization: Bearer sk-your-api-key
+```
+
+### **API Key Header（Claude 兼容）**
+
+```
+x-api-key: sk-your-api-key
+```
+
+### **钱包签名认证（Agent 专用）**
+
+```
+X-Agent-Address: 0x1a2b3c4d5e6f...
+X-Agent-Signature: 0xabcdef...
+X-Agent-Timestamp: 1719000000
+```
+
+---

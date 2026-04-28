@@ -1,0 +1,72 @@
+---
+title: "5.2 Agent Auto-routing and Token Budgeting"
+---
+
+> This page is synced automatically from the Chinese source and awaits full English translation.
+> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
+
+
+## **5.2 Agent 自动路由购买 Token**
+
+> **这是我们认为最重要的 Web4 创新之一：让 AI 自己决定用什么模型、花多少钱。**
+> 
+
+### **核心思想**
+
+人类购买模型服务时，需要：
+
+- 研究各模型能力
+- 对比价格
+- 手动配置
+- 定期维护
+
+**Agent 不需要这些。**
+
+Agent 知道自己的任务类型，平台知道每个模型的实时能力和价格——让平台帮 Agent 做决策，Agent 只需声明目标和预算。
+
+### **工作流示例**
+
+```
+# 给 Agent 100 USDC 的月预算，让它自主决定如何分配
+
+agent = Agent(
+    wallet=AgentWallet(budget_usdc=100),
+    routing_policy={
+        "optimize_for": "cost_quality_balance",
+        "task_model_mapping": {
+            "text_processing": "auto-cheap",    # 文本处理用便宜模型
+            "code_generation": "auto-quality",  # 代码生成用高质量模型
+            "quick_qa": "auto-fast",            # 快问快答用快速模型
+            "analysis": "claude-opus-4"         # 分析任务指定 Opus
+        }
+    }
+)
+
+# Agent 自主完成一系列任务
+results = agent.run_pipeline([
+    {"task": "summarize_emails", "type": "text_processing"},     # → Kimi（便宜）
+    {"task": "write_python_script", "type": "code_generation"},  # → Claude Opus（高质量）
+    {"task": "answer_customer", "type": "quick_qa"},             # → Haiku（极快）
+    {"task": "analyze_financials", "type": "analysis"},          # → Claude Opus（指定）
+])
+
+# 查看 Agent 的花费明细
+print(agent.wallet.spending_report())
+# 输出：
+# text_processing: 0.02 USDC (5 tasks)
+# code_generation: 0.45 USDC (3 tasks)
+# quick_qa: 0.01 USDC (8 tasks)
+# analysis: 0.38 USDC (2 tasks)
+# 总计: 0.86 USDC / 月预算 100 USDC
+```
+
+### **为什么这很重要？**
+
+这不只是工程便利性问题，这是**经济效率的根本性提升**：
+
+- 人类需要花时间研究、配置、维护模型选择逻辑
+- Agent 可以在毫秒内完成这些决策
+- Agent 可以根据实时价格、质量和延迟动态调整
+- **最终结果：AI 比人类更擅长管理 AI 的成本**
+
+---

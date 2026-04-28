@@ -9,51 +9,210 @@
     "dark": "#1e3a8a"
   },
   "navigation": {
-    "groups": [
+    "languages": [
       {
-        "group": "开始使用",
-        "pages": [
-          "docs/index",
-          "docs/module-1-platform-overview",
-          "docs/module-2-quickstart"
+        "language": "zh",
+        "default": true,
+        "groups": [
+          {
+            "group": "开始使用",
+            "pages": [
+              "docs/index",
+              "docs/module-1-platform-overview",
+              "docs/module-2-quickstart"
+            ]
+          },
+          {
+            "group": "核心能力",
+            "pages": [
+              "docs/module-3-models-routing",
+              "docs/module-4-payment-settlement"
+            ]
+          },
+          {
+            "group": "Agent 经济层",
+            "pages": [
+              "docs/module-5-agent-economy",
+              "docs/module-5-agent-wallet-identity",
+              "docs/module-5-agent-routing-budget",
+              "docs/module-5-erc8183-roadmap",
+              "docs/module-5-multi-agent-economy",
+              "docs/module-5-web4-vision"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "docs/api-reference",
+              "docs/api-authentication",
+              "docs/api-chat-completions",
+              "docs/api-messages",
+              "docs/api-routing",
+              "docs/api-errors-rate-limits",
+              "docs/api-openapi"
+            ]
+          },
+          {
+            "group": "更新与支持",
+            "pages": [
+              "docs/changelog",
+              "docs/faq-troubleshooting",
+              "docs/brand-assets"
+            ]
+          }
         ]
       },
       {
-        "group": "核心能力",
-        "pages": [
-          "docs/module-3-models-routing",
-          "docs/module-4-payment-settlement"
+        "language": "en",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "docs/en/index",
+              "docs/en/module-1-platform-overview",
+              "docs/en/module-2-quickstart"
+            ]
+          },
+          {
+            "group": "Core Capabilities",
+            "pages": [
+              "docs/en/module-3-models-routing",
+              "docs/en/module-4-payment-settlement"
+            ]
+          },
+          {
+            "group": "Agent Economy",
+            "pages": [
+              "docs/en/module-5-agent-economy",
+              "docs/en/module-5-agent-wallet-identity",
+              "docs/en/module-5-agent-routing-budget",
+              "docs/en/module-5-erc8183-roadmap",
+              "docs/en/module-5-multi-agent-economy",
+              "docs/en/module-5-web4-vision"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "docs/en/api-reference",
+              "docs/en/api-authentication",
+              "docs/en/api-chat-completions",
+              "docs/en/api-messages",
+              "docs/en/api-routing",
+              "docs/en/api-errors-rate-limits",
+              "docs/en/api-openapi"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "docs/en/changelog",
+              "docs/en/faq-troubleshooting",
+              "docs/en/brand-assets"
+            ]
+          }
         ]
       },
       {
-        "group": "Agent 经济层",
-        "pages": [
-          "docs/module-5-agent-economy",
-          "docs/module-5-agent-wallet-identity",
-          "docs/module-5-agent-routing-budget",
-          "docs/module-5-erc8183-roadmap",
-          "docs/module-5-multi-agent-economy",
-          "docs/module-5-web4-vision"
+        "language": "ja",
+        "groups": [
+          {
+            "group": "はじめに",
+            "pages": [
+              "docs/ja/index",
+              "docs/ja/module-1-platform-overview",
+              "docs/ja/module-2-quickstart"
+            ]
+          },
+          {
+            "group": "コア機能",
+            "pages": [
+              "docs/ja/module-3-models-routing",
+              "docs/ja/module-4-payment-settlement"
+            ]
+          },
+          {
+            "group": "Agent エコノミー",
+            "pages": [
+              "docs/ja/module-5-agent-economy",
+              "docs/ja/module-5-agent-wallet-identity",
+              "docs/ja/module-5-agent-routing-budget",
+              "docs/ja/module-5-erc8183-roadmap",
+              "docs/ja/module-5-multi-agent-economy",
+              "docs/ja/module-5-web4-vision"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "docs/ja/api-reference",
+              "docs/ja/api-authentication",
+              "docs/ja/api-chat-completions",
+              "docs/ja/api-messages",
+              "docs/ja/api-routing",
+              "docs/ja/api-errors-rate-limits",
+              "docs/ja/api-openapi"
+            ]
+          },
+          {
+            "group": "サポート",
+            "pages": [
+              "docs/ja/changelog",
+              "docs/ja/faq-troubleshooting",
+              "docs/ja/brand-assets"
+            ]
+          }
         ]
       },
       {
-        "group": "API",
-        "pages": [
-          "docs/api-reference",
-          "docs/api-authentication",
-          "docs/api-chat-completions",
-          "docs/api-messages",
-          "docs/api-routing",
-          "docs/api-errors-rate-limits",
-          "docs/api-openapi"
-        ]
-      },
-      {
-        "group": "更新与支持",
-        "pages": [
-          "docs/changelog",
-          "docs/faq-troubleshooting",
-          "docs/brand-assets"
+        "language": "ko",
+        "groups": [
+          {
+            "group": "시작하기",
+            "pages": [
+              "docs/ko/index",
+              "docs/ko/module-1-platform-overview",
+              "docs/ko/module-2-quickstart"
+            ]
+          },
+          {
+            "group": "핵심 기능",
+            "pages": [
+              "docs/ko/module-3-models-routing",
+              "docs/ko/module-4-payment-settlement"
+            ]
+          },
+          {
+            "group": "Agent 경제",
+            "pages": [
+              "docs/ko/module-5-agent-economy",
+              "docs/ko/module-5-agent-wallet-identity",
+              "docs/ko/module-5-agent-routing-budget",
+              "docs/ko/module-5-erc8183-roadmap",
+              "docs/ko/module-5-multi-agent-economy",
+              "docs/ko/module-5-web4-vision"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "docs/ko/api-reference",
+              "docs/ko/api-authentication",
+              "docs/ko/api-chat-completions",
+              "docs/ko/api-messages",
+              "docs/ko/api-routing",
+              "docs/ko/api-errors-rate-limits",
+              "docs/ko/api-openapi"
+            ]
+          },
+          {
+            "group": "지원",
+            "pages": [
+              "docs/ko/changelog",
+              "docs/ko/faq-troubleshooting",
+              "docs/ko/brand-assets"
+            ]
+          }
         ]
       }
     ]

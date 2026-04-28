@@ -1,0 +1,24 @@
+---
+title: "OpenAPI Guide"
+---
+
+> This page is synced automatically from the Chinese source and awaits full English translation.
+> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
+
+
+# OpenAPI 说明
+
+已提供可直接扩展的 OpenAPI 模板文件：
+
+- `docs/api/openapi.yaml`
+
+建议接入步骤：
+
+1. 按真实接口补全 `paths` 与 `components.schemas`。
+2. 补齐错误码与限流头字段定义。
+3. 在 CI 中增加 OpenAPI 校验，避免文档与接口漂移。
+
+## 下一步可选
+
+- 基于 OpenAPI 生成 SDK（TypeScript / Python）。
+- 挂载在线 API Explorer。
