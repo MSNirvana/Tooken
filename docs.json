@@ -11,14 +11,6 @@
   "navigation": {
     "groups": [
       {
-        "group": "开始使用",
-        "pages": [
-          "docs/index",
-          "docs/module-1-platform-overview",
-          "docs/module-2-quickstart"
-        ]
-      },
-      {
         "group": "核心能力",
         "pages": [
           "docs/module-3-models-routing",
@@ -57,5 +49,7 @@
         ]
       }
     ]
-  }
+  },
+  "favicon": "/images/Logo.PNG",
+  "logo": "/images/Logo.PNG"
 }
