@@ -1,10 +1,10 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "name": "Tooken Docs",
-  "description": "AGI 基础设施、智能路由与 Web4 原生结算层文档",
+  "description": "Bringing AGI to Web4!",
   "theme": "mint",
   "banner": {
-    "content": "Tooken Docs 已支持中/英/日/韩多语言自动同步。",
+    "content": "Shape the Future with Tooken!",
     "dismissible": true,
     "type": "info"
   },
