@@ -1,26 +1,11 @@
 ---
-title: "\"\\\"\\\\\\\"Module 4: Payment and Settlement\\\\\\\"\\\"\""
+title: "模块四：支付与结算"
 ---
-
-> This page is synced automatically from the Chinese source and awaits full Japanese translation.
-> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
-
-
-> This page is synced automatically from the Chinese source and awaits full Korean translation.
-> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
-
-
-> This page is synced automatically from the Chinese source and awaits full Japanese translation.
-> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
-
-
-> This page is synced automatically from the Chinese source and awaits full English translation.
-> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
 
 
 # **模块四：支付与结算**
 
-## **4.1 Credits 计费体系**
+## **4.1 クレジット 计费体系**
 
 ### **计费单位**
 
@@ -34,14 +19,14 @@ title: "\"\\\"\\\\\\\"Module 4: Payment and Settlement\\\\\\\"\\\"\""
 
 | **模型** | **输入成本** | **输出成本** | **总成本** |
 | --- | --- | --- | --- |
-| claude-opus-4 | 7.5 Credits | 15 Credits | 22.5 Credits (≈¥0.16) |
-| claude-sonnet-4 | 1.5 Credits | 6 Credits | 7.5 Credits (≈¥0.05) |
-| kimi-k2 | 0.25 Credits | 1 Credits | 1.25 Credits (≈¥0.009) |
+| claude-opus-4 | 7.5 クレジット | 15 クレジット | 22.5 クレジット (≈¥0.16) |
+| claude-sonnet-4 | 1.5 クレジット | 6 クレジット | 7.5 クレジット (≈¥0.05) |
+| kimi-k2 | 0.25 クレジット | 1 クレジット | 1.25 クレジット (≈¥0.009) |
 | **auto（推荐）** | **自动选最优** | — | **↓ 平均节省 70%** |
 
 ### **企业套餐**
 
-| **套餐** | **月费** | **赠送 Credits** | **折扣** | **适合场景** |
+| **套餐** | **月费** | **赠送 クレジット** | **折扣** | **适合场景** |
 | --- | --- | --- | --- | --- |
 | 入门版 | ¥199 | 50,000 | 9折 | 小团队测试 |
 | 专业版 | ¥999 | 300,000 | 8折 | 中小企业日常 |
@@ -71,7 +56,7 @@ title: "\"\\\"\\\\\\\"Module 4: Payment and Settlement\\\\\\\"\\\"\""
 2. 选择充值网络（推荐 Base，手续费 < $0.01）
 3. 复制平台收款地址
 4. 从你的钱包向该地址转账 USDT / USDC
-5. 链上确认后（约 10 秒 - 2 分钟），Credits 自动到账
+5. 链上确认后（约 10 秒 - 2 分钟），クレジット 自动到账
 
 **Base 网络充值示例（Solidity 调用）：**
 
@@ -208,7 +193,7 @@ AI 输出 "brown" → 支付 0.000001 USDC
 
 ### **愿景**
 
-传统的 Credits 预充值体系仍然是"先买后用"的人类付款模式。我们正在构建真正的**机器原生微支付**基础设施：
+传统的 クレジット 预充值体系仍然是"先买后用"的人类付款模式。我们正在构建真正的**机器原生微支付**基础设施：
 
 - **每 Token 对应一次价值转移**，精确到 0.000001 USDC 粒度
 - **无需账户余额**，Agent 持有链上资产即可直接使用
@@ -217,7 +202,7 @@ AI 输出 "brown" → 支付 0.000001 USDC
 ### **技术路径**
 
 ```
-阶段 1（当前）：Credits 预充值 + 链上批量结算
+阶段 1（当前）：クレジット 预充值 + 链上批量结算
 阶段 2（2026 Q3）：x402 按请求实时结算
 阶段 3（2027）：Token 级流式结算 + Agent 自主收款
 ```

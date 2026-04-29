@@ -1,21 +1,6 @@
 ---
-title: "\"\\\"\\\\\\\"Module 3: Models and Routing\\\\\\\"\\\"\""
+title: "模块三：模型与路由"
 ---
-
-> This page is synced automatically from the Chinese source and awaits full Korean translation.
-> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
-
-
-> This page is synced automatically from the Chinese source and awaits full Korean translation.
-> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
-
-
-> This page is synced automatically from the Chinese source and awaits full Japanese translation.
-> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
-
-
-> This page is synced automatically from the Chinese source and awaits full English translation.
-> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.
 
 
 # **模块三：模型与路由**
@@ -24,7 +9,7 @@ title: "\"\\\"\\\\\\\"Module 3: Models and Routing\\\\\\\"\\\"\""
 
 ### **国际顶级模型**
 
-| **模型 ID** | **提供商** | **上下文窗口** | **特点** | **Credits/1K Token** |
+| **模型 ID** | **提供商** | **上下文窗口** | **特点** | **크레딧/1K Token** |
 | --- | --- | --- | --- | --- |
 | `gpt-5` | OpenAI | 128K | 综合最强，推理顶尖 | 15 |
 | `gpt-5-mini` | OpenAI | 128K | 性价比，速度快 | 0.6 |
@@ -36,7 +21,7 @@ title: "\"\\\"\\\\\\\"Module 3: Models and Routing\\\\\\\"\\\"\""
 
 ### **国产优选模型**
 
-| **模型 ID** | **提供商** | **上下文窗口** | **特点** | **Credits/1K Token** |
+| **模型 ID** | **提供商** | **上下文窗口** | **特点** | **크레딧/1K Token** |
 | --- | --- | --- | --- | --- |
 | `kimi-k2` | 月之暗面 | 128K | 中文最强，长文理解 | 0.5 |
 | `deepseek-v3` | DeepSeek | 64K | 代码极强，开源最优 | 0.2 |
@@ -89,7 +74,7 @@ response = client.chat.completions.create(
         "route_strategy": {
             "cost_weight": 0.8,       # 成本权重（0-1，越高越省钱）
             "quality_weight": 0.2,    # 质量权重
-            "max_cost_per_1k": 5,     # 单次请求最高成本上限（Credits/1K Token）
+            "max_cost_per_1k": 5,     # 单次请求最高成本上限（크레딧/1K Token）
             "preferred_regions": ["cn"],  # 优先国内模型
             "exclude_models": ["gpt-5"]   # 排除特定模型
         }
@@ -104,7 +89,7 @@ response = client.chat.completions.create(
 ```
 X-Routed-Model: kimi-k2
 X-Route-Reason: chinese-text-optimized
-X-Cost-Saved: 0.87          # 相比默认模型节省的 Credits
+X-Cost-Saved: 0.87          # 相比默认模型节省的 크레딧
 ```
 
 ---

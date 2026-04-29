@@ -120,6 +120,59 @@ def parse_frontmatter(text: str):
     return fm, body
 
 
+def normalize_scalar(value: str):
+    """
+    Best-effort unquote/unescape for previously over-escaped frontmatter values.
+    """
+    s = value.strip()
+    # Repeatedly try JSON decode for values like "\"\\\"Title\\\"\"".
+    for _ in range(4):
+        if len(s) >= 2 and ((s[0] == '"' and s[-1] == '"') or (s[0] == "'" and s[-1] == "'")):
+            try:
+                # json expects double-quoted strings; for single quotes, fallback strip.
+                if s[0] == "'":
+                    s = s[1:-1]
+                else:
+                    s = json.loads(s)
+            except Exception:
+                s = s[1:-1]
+        else:
+            break
+    return s
+
+
+def strip_fallback_banner(body: str):
+    """
+    Remove stacked fallback notices at the beginning of locale files.
+    """
+    lines = body.splitlines()
+    i = 0
+    n = len(lines)
+
+    # Skip leading blank lines
+    while i < n and not lines[i].strip():
+        i += 1
+
+    removed_any = False
+    while i + 1 < n:
+        l1 = lines[i].strip()
+        l2 = lines[i + 1].strip()
+        if l1.startswith("> This page is synced automatically from the Chinese source and awaits full ") and \
+           l1.endswith(" translation.") and \
+           l2 == "> To enable AI translation, configure `OPENAI_API_KEY` in GitHub repository secrets.":
+            removed_any = True
+            i += 2
+            while i < n and not lines[i].strip():
+                i += 1
+            continue
+        break
+
+    if removed_any:
+        remaining = lines[i:]
+        return ("\n".join(remaining)).lstrip("\n")
+    return body
+
+
 def split_sections(body: str):
     """
     Split markdown body into sections by heading boundaries.
@@ -154,7 +207,7 @@ def sections_to_body(sections):
 def build_frontmatter(fm: dict):
     lines = ["---"]
     for k, v in fm.items():
-        value = str(v)
+        value = normalize_scalar(str(v))
         # Quote scalar values to keep YAML safe for colons and symbols.
         lines.append(f"{k}: {json.dumps(value, ensure_ascii=False)}")
     lines.append("---")
@@ -261,6 +314,8 @@ def main():
     parser.add_argument("--model", default="gpt-4.1-mini")
     parser.add_argument("--locales", default="en,ja,ko")
     parser.add_argument("--force-fallback", action="store_true")
+    parser.add_argument("--sanitize-only", action="store_true")
+    parser.add_argument("--require-api-key", action="store_true")
     args = parser.parse_args()
     locales = [x.strip() for x in args.locales.split(",") if x.strip()]
 
@@ -279,6 +334,10 @@ def main():
     locale_style = glossary.get("locale_style", {})
     locale_term_map = glossary.get("locale_term_map", {})
     changed = set()
+    if args.require_api_key and not api_key and not args.sanitize_only:
+        raise SystemExit(
+            "Missing translation API key. Set TRANSLATION_API_KEY or OPENAI_API_KEY before syncing."
+        )
     if args.all or not args.since_ref:
         changed = {str(Path("docs") / p) for p in ZH_PAGES}
     else:
@@ -297,6 +356,7 @@ def main():
             continue
         text = zh_path.read_text(encoding="utf-8")
         fm, body = parse_frontmatter(text)
+        body = strip_fallback_banner(body)
         zh_sections = split_sections(body)
         for locale in locales:
             locale_fm = dict(fm)
@@ -309,6 +369,13 @@ def main():
             if locale_path.exists():
                 old_text = locale_path.read_text(encoding="utf-8")
                 _old_fm, old_body = parse_frontmatter(old_text)
+                if args.sanitize_only:
+                    clean_old = strip_fallback_banner(old_body)
+                    # Normalize title/frontmatter escaping artifacts only.
+                    out_text = build_frontmatter(locale_fm) + "\n\n" + clean_old
+                    locale_path.write_text(out_text, encoding="utf-8")
+                    updated.append(str(locale_path.relative_to(ROOT)))
+                    continue
                 existing_sections = {k: v for k, v in split_sections(old_body)}
 
             if api_key and not args.force_fallback:
@@ -346,7 +413,7 @@ def main():
             updated.append(str(locale_path.relative_to(ROOT)))
 
     if updated:
-        print("Updated English files:")
+        print("Updated locale files:")
         for p in updated:
             print(f"- {p}")
     else:
