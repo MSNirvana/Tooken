@@ -376,6 +376,7 @@ def main():
                     locale_path.write_text(out_text, encoding="utf-8")
                     updated.append(str(locale_path.relative_to(ROOT)))
                     continue
+                old_body = strip_fallback_banner(old_body)
                 existing_sections = {k: v for k, v in split_sections(old_body)}
 
             if api_key and not args.force_fallback:
@@ -384,7 +385,9 @@ def main():
                     translated_sections = []
                     for sec_key, zh_content in zh_sections:
                         old_content = existing_sections.get(sec_key)
-                        if old_content is not None and old_content.strip() == zh_content.strip():
+                        # Reuse only when section is already translated.
+                        # If old content equals Chinese source, it's untranslated and must be translated.
+                        if old_content is not None and old_content.strip() != zh_content.strip():
                             translated_sections.append((sec_key, old_content))
                             continue
                         translated = translate_with_openai(
