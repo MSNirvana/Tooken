@@ -9,15 +9,15 @@
     "type": "info"
   },
   "appearance": {
-    "default": "system"
+    "default": "light"
   },
   "background": {
     "decoration": "grid"
   },
   "colors": {
-    "primary": "#2563eb",
-    "light": "#dbeafe",
-    "dark": "#1e3a8a"
+    "primary": "#f59e0b",
+    "light": "#fff6e5",
+    "dark": "#7c2d12"
   },
   "navbar": {
     "links": [
