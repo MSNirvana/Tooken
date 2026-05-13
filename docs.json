@@ -173,15 +173,6 @@
               "docs/en/api-errors-rate-limits",
               "docs/en/api-openapi"
             ]
-          },
-          {
-            "group": "Support",
-            "pages": [
-              "docs/en/changelog",
-              "docs/en/faq-troubleshooting",
-              "docs/en/brand-assets",
-              "docs/en/translation-quality"
-            ]
           }
         ]
       },
@@ -225,15 +216,6 @@
               "docs/ja/api-errors-rate-limits",
               "docs/ja/api-openapi"
             ]
-          },
-          {
-            "group": "サポート",
-            "pages": [
-              "docs/ja/changelog",
-              "docs/ja/faq-troubleshooting",
-              "docs/ja/brand-assets",
-              "docs/ja/translation-quality"
-            ]
           }
         ]
       },
@@ -276,15 +258,6 @@
               "docs/ko/api-routing",
               "docs/ko/api-errors-rate-limits",
               "docs/ko/api-openapi"
-            ]
-          },
-          {
-            "group": "지원",
-            "pages": [
-              "docs/ko/changelog",
-              "docs/ko/faq-troubleshooting",
-              "docs/ko/brand-assets",
-              "docs/ko/translation-quality"
             ]
           }
         ]
