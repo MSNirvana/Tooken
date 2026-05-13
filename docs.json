@@ -130,15 +130,6 @@
               "docs/api-errors-rate-limits",
               "docs/api-openapi"
             ]
-          },
-          {
-            "group": "更新与支持",
-            "pages": [
-              "docs/changelog",
-              "docs/faq-troubleshooting",
-              "docs/brand-assets",
-              "docs/translation-quality"
-            ]
           }
         ]
       },
